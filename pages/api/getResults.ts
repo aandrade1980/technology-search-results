@@ -3,6 +3,7 @@
 /** Libraries */
 import { load } from 'cheerio';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 /** Types */
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -53,6 +54,7 @@ export default function handler(
 
       for (let i = 0; i < images.length; i++) {
         results.push({
+          id: uuidv4(),
           title: titles[i]?.toLowerCase(),
           image: images[i],
           price: prices[i]
