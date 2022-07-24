@@ -15,7 +15,7 @@ const Home: NextPage = () => {
   const [inputValue, setInputValue] = useState('');
   const [searchText, setSearchText] = useState('');
 
-  const { isSearching, searchResults = [] } = useResults(searchText);
+  const { isSearching, searchResults } = useResults(searchText);
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

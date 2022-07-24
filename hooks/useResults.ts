@@ -11,7 +11,7 @@ const searchByText = async (text: string): Promise<Array<Result>> => {
 };
 
 export default function useResults(searchText: string) {
-  const { isLoading, data: searchResults } = useQuery(
+  const { isLoading, data: searchResults = [] } = useQuery(
     ['searchQuery', searchText],
     () => searchByText(searchText),
     {
