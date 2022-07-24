@@ -39,6 +39,7 @@ export default function handler(
       const images: Array<string | undefined> = [];
       const titles: Array<string | undefined> = [];
       const prices: Array<string | undefined> = [];
+      const links: Array<string | undefined> = [];
 
       $('.link-secundario > img').each((_, el) => {
         images.push('https://www.banifox.com' + $(el).attr('src'));
@@ -49,6 +50,9 @@ export default function handler(
       $('#lista_productos h4.texto-xl').each((_, el) => {
         prices.push($(el).text());
       });
+      $('#lista_productos .relative a').each((_, el) => {
+        links.push('https://www.banifox.com' + $(el).attr('href'));
+      });
 
       const results = [];
 
@@ -57,7 +61,8 @@ export default function handler(
           id: uuidv4(),
           title: titles[i]?.toLowerCase(),
           image: images[i],
-          price: prices[i]
+          price: prices[i],
+          link: links[i]
         });
       }
 
