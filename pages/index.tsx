@@ -54,7 +54,7 @@ const Home: NextPage = () => {
           </Row>
         )}
 
-        {!isSearching && searchResults?.length > 0 && (
+        {!isSearching && searchResults.length > 0 && (
           <ResultList searchResults={searchResults} />
         )}
       </Container>
