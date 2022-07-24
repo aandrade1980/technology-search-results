@@ -1,11 +1,16 @@
-import { NextUIProvider } from '@nextui-org/react';
 import type { AppProps } from 'next/app';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { NextUIProvider } from '@nextui-org/react';
+
+const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <NextUIProvider>
-      <Component {...pageProps} />
-    </NextUIProvider>
+    <QueryClientProvider client={queryClient}>
+      <NextUIProvider>
+        <Component {...pageProps} />
+      </NextUIProvider>
+    </QueryClientProvider>
   );
 }
 

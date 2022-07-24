@@ -6,15 +6,15 @@ import { Button, Container, Input, Loading, Spacer } from '@nextui-org/react';
 
 interface SearchFormProps {
   handleSearch: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
-  searchText: string;
-  setSearchText: Dispatch<SetStateAction<string>>;
+  inputValue: string;
+  setInputValue: Dispatch<SetStateAction<string>>;
   isSearching: boolean;
 }
 
 export const SearchForm = ({
   handleSearch,
-  searchText,
-  setSearchText,
+  inputValue,
+  setInputValue,
   isSearching
 }: SearchFormProps) => {
   return (
@@ -27,10 +27,10 @@ export const SearchForm = ({
           color="primary"
           id="search"
           name="search"
-          onChange={e => setSearchText(e.target.value)}
+          onChange={e => setInputValue(e.target.value)}
           placeholder="Search for something"
           type="text"
-          value={searchText}
+          value={inputValue}
         />
         <Spacer x={1} />
         <Button shadow type="submit" disabled={isSearching}>

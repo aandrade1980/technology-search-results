@@ -1,37 +1,31 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
+/** Hooks */
 import { useState } from 'react';
+import useResults from '../hooks/useResults';
 
 /** Components */
 import { Container, Loading, Row } from '@nextui-org/react';
 import { ResultList } from '../components/ResultList';
 import { SearchForm } from '../components/SearchForm';
+import Head from 'next/head';
 
 /** Types */
-import { Result } from '../@types/sharedTypes';
+import type { NextPage } from 'next';
 
 const Home: NextPage = () => {
+  const [inputValue, setInputValue] = useState('');
   const [searchText, setSearchText] = useState('');
-  const [searchResults, setSearchResults] = useState<Result[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
+
+  const { isSearching, searchResults } = useResults(searchText);
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!searchText) {
+    if (!inputValue) {
       return;
     }
 
-    setIsSearching(true);
-
-    const results = await fetch(`/api/getResults?searchText=${searchText}`);
-    const data = await results.json();
-
-    setSearchResults(data);
-    setIsSearching(false);
+    setSearchText(inputValue);
   };
-
-  console.log(searchResults);
 
   return (
     <div>
@@ -47,8 +41,8 @@ const Home: NextPage = () => {
         </Row>
         <Row justify="center" align="center">
           <SearchForm
-            searchText={searchText}
-            setSearchText={setSearchText}
+            inputValue={inputValue}
+            setInputValue={setInputValue}
             handleSearch={handleSearch}
             isSearching={isSearching}
           />
