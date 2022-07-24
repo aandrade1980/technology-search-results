@@ -1,15 +1,13 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
+/** Libraries */
 import { load } from 'cheerio';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
+/** Types */
 import type { NextApiRequest, NextApiResponse } from 'next';
-
-type Result = {
-  title: string | undefined;
-  image: string | undefined;
-  price: string | undefined;
-};
+import { Result } from '../../@types/sharedTypes';
 
 type Error = {
   error: any;
@@ -43,7 +41,7 @@ export default function handler(
       const prices: Array<string | undefined> = [];
 
       $('.link-secundario > img').each((_, el) => {
-        images.push($(el).attr('src'));
+        images.push('https://www.banifox.com' + $(el).attr('src'));
       });
       $('#lista_productos h4 a').each((_, el) => {
         titles.push($(el).attr('title'));
@@ -56,7 +54,8 @@ export default function handler(
 
       for (let i = 0; i < images.length; i++) {
         results.push({
-          title: titles[i],
+          id: uuidv4(),
+          title: titles[i]?.toLowerCase(),
           image: images[i],
           price: prices[i]
         });

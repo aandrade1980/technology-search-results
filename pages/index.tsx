@@ -2,13 +2,17 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useState } from 'react';
 
-import { Container, Row, Input, Spacer, Loading } from '@nextui-org/react';
+/** Components */
+import { Container, Loading, Row } from '@nextui-org/react';
+import { ResultList } from '../components/ResultList';
+import { SearchForm } from '../components/SearchForm';
 
-import { Button } from '@nextui-org/react';
+/** Types */
+import { Result } from '../@types/sharedTypes';
 
 const Home: NextPage = () => {
   const [searchText, setSearchText] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState<Result[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,30 +46,23 @@ const Home: NextPage = () => {
           <h1>Welcome to Search Technology</h1>
         </Row>
         <Row justify="center" align="center">
-          <form onSubmit={handleSearch}>
-            <Container display="flex">
-              <Input
-                placeholder="Search for something"
-                clearable
-                bordered
-                color="primary"
-                type="text"
-                name="search"
-                id="search"
-                value={searchText}
-                onChange={e => setSearchText(e.target.value)}
-              />
-              <Spacer x={1} />
-              <Button shadow type="submit">
-                {isSearching ? (
-                  <Loading color="currentColor" type="points" size="sm" />
-                ) : (
-                  'Search'
-                )}
-              </Button>
-            </Container>
-          </form>
+          <SearchForm
+            searchText={searchText}
+            setSearchText={setSearchText}
+            handleSearch={handleSearch}
+            isSearching={isSearching}
+          />
         </Row>
+
+        {isSearching && (
+          <Row justify="center" align="center" css={{ mt: 80 }}>
+            <Loading size="xl" />
+          </Row>
+        )}
+
+        {!isSearching && searchResults.length > 0 && (
+          <ResultList searchResults={searchResults} />
+        )}
       </Container>
     </div>
   );
