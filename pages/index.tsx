@@ -2,13 +2,25 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useState } from 'react';
 
-import { Container, Row, Input, Spacer, Loading } from '@nextui-org/react';
+/** Components */
+import {
+  Card,
+  Container,
+  Grid,
+  Image,
+  Loading,
+  Row,
+  Text
+} from '@nextui-org/react';
+import { SearchForm } from '../components/SearchForm';
 
-import { Button } from '@nextui-org/react';
+/** Types */
+import { Result } from '../@types/sharedTypes';
+import { callbackify } from 'util';
 
 const Home: NextPage = () => {
   const [searchText, setSearchText] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState<Result[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,30 +54,52 @@ const Home: NextPage = () => {
           <h1>Welcome to Search Technology</h1>
         </Row>
         <Row justify="center" align="center">
-          <form onSubmit={handleSearch}>
-            <Container display="flex">
-              <Input
-                placeholder="Search for something"
-                clearable
-                bordered
-                color="primary"
-                type="text"
-                name="search"
-                id="search"
-                value={searchText}
-                onChange={e => setSearchText(e.target.value)}
-              />
-              <Spacer x={1} />
-              <Button shadow type="submit">
-                {isSearching ? (
-                  <Loading color="currentColor" type="points" size="sm" />
-                ) : (
-                  'Search'
-                )}
-              </Button>
-            </Container>
-          </form>
+          <SearchForm
+            searchText={searchText}
+            setSearchText={setSearchText}
+            handleSearch={handleSearch}
+            isSearching={isSearching}
+          />
         </Row>
+
+        {isSearching && (
+          <Row justify="center" align="center" css={{ mt: 80 }}>
+            <Loading size="xl" />
+          </Row>
+        )}
+
+        <Grid.Container
+          gap={2}
+          css={{ mt: 40, maxH: 'calc(100vh - 165px)', overflowX: 'auto' }}
+        >
+          {!isSearching &&
+            searchResults.length > 0 &&
+            searchResults.map(result => (
+              <Grid key={result.title} xs={4}>
+                <Card color="black" isHoverable isPressable>
+                  <Card.Body>
+                    <Row justify="center" align="center">
+                      <Image
+                        objectFit="cover"
+                        src={result.image as string}
+                        alt={result.title}
+                      />
+                    </Row>
+                    <Row justify="center" align="center">
+                      <Text transform="capitalize" h4 size={18} css={{ m: 0 }}>
+                        {result.title}
+                      </Text>
+                    </Row>
+                    <Row justify="center" align="baseline">
+                      <Text h4 size={15} css={{ m: 0, color: '$red600' }}>
+                        {result.price}
+                      </Text>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              </Grid>
+            ))}
+        </Grid.Container>
       </Container>
     </div>
   );
