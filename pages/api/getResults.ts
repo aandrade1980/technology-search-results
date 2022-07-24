@@ -31,8 +31,10 @@ export default function handler(
 
   const { searchText } = req.query;
 
-  axios
-    .get(`https://www.banifox.com/buscar?clave=${searchText}`, AXIOS_OPTIONS)
+  const encodedString = encodeURI(searchText as string);
+
+  return axios
+    .get(`https://www.banifox.com/buscar?clave=${encodedString}`, AXIOS_OPTIONS)
     .then(response => {
       let $ = load(response.data);
 

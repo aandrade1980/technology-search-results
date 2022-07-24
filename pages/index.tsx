@@ -19,6 +19,8 @@ const Home: NextPage = () => {
     setSearchResults(data);
   };
 
+  console.log(searchResults);
+
   return (
     <div className={styles.container}>
       <Head>
